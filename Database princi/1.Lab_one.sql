@@ -1,17 +1,18 @@
-CREATE DATABASE lab1;
-
 select artist.artist_name, artwork.work_title
 from artist
-join artwork on  artist.artist_id = artwork.artwork_id 
+join creates on  artist.artist_id = creates.artist_id
+join artwork on creates. artwork_id =  artwork.artwork_id
 where artwork.work_title ='Rainbow';
 
-select  artwork.work_title
-from artist
-join artwork on  artist.artist_id = artwork.artwork_id 
-where artist.artist_name = 'Lolo';
 
-select customer.cust_name, artwork.work_title, artwork.price
-from customer
-join  purchase on customer.cust_id = purchase.cust_id
-join artwork on artwork.artwork_id = purchase.artwork_id
-WHERE artwork.price <= 200;
+SELECT aw.work_title
+FROM artist a
+JOIN artwork aw ON a.artist_id = aw.artwork_id
+WHERE a.artist_name = 'Lolo';
+
+
+SELECT c.cust_name, a.work_title, a.price
+FROM customer AS c
+JOIN purchase AS p ON c.cust_id = p.cust_id
+JOIN artwork AS a ON a.artwork_id = p.artwork_id
+WHERE a.price <= 200;
