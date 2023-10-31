@@ -2,7 +2,7 @@ CREATE TABLE animal_type (
     animal_type_id SERIAL PRIMARY KEY,
     common_name VARCHAR(50) NOT NULL UNIQUE,
     scientific_name VARCHAR(150) NOT NULL,
-    conservation_status VARCHAR(50) NOT NULL  -- Specify the data type for conservation_status
+    conservation_status VARCHAR(50) NOT NULL  
 );
 
 CREATE TABLE menagerie (
@@ -27,3 +27,9 @@ VALUES
     (2, 'Arctic Wolf', '2008-09-30', 'F', 'National Zoo', 'Freddy', 'Strong appetite'),
     (3, 'Bengal Tiger', '2006-06-01', 'M', 'Scotland Zoo', 'Spark', 'Likes to play'),
     (4, 'Arctic Wolf', '2007-06-12', 'F', 'Southampton National Park', 'Mia', 'Doesn''t like sun');
+
+
+SELECT m.common_name, m.date_aquired, at.scientific_name
+FROM menagerie AS m
+JOIN animal_type AS at ON at.common_name = m.common_name
+WHERE at.conservation_status = 'Endangered';
