@@ -1,51 +1,65 @@
-GRANT SELECT ON TABLE  rental  TO cashier;
-GRANT INSERT ON TABLE  rental  TO cashier;
+DROP INDEX IF EXISTS my_phone;
 
+UPDATE
+    address        
+SET
+    phone = 02392844444
+WHERE
+    address_id = 100;
 
-GRANT DELETE ON TABLE  rental  TO cashier;
-
-
-CREATE ROLE manager 
-  WITH LOGIN
-  PASSWORD 'Uop@123';
-GRANT UPDATE ON country to manager;
-GRANT manager TO sales;
-
-CREATE ROLE sales  
-  WITH LOGIN
-  PASSWORD 'Uop@123';
-
-GRANT UPDATE ON country to sales;
-
-DROP ROLE manager;
-DROP ROLE sales;
-
-SELECT current_user;
-
-GRANT SELECT ON TABLE customer_view TO sales;
-
-CREATE ROLE admin  
-  WITH LOGIN
-  PASSWORD 'Uop@123';
-ALTER ROLE admin CREATEROLE;
-
-;
-
-psql -h localhost -p 5432 -U senior -d movie_rental
-
-GRANT SELECT ON ALL TABLE TO admin;
-GRANT UPDATE ON TABLE staff TO admin;
+explain
+SELECT*
+FROM  
+    address
+WHERE
+    address_id = 100;
 
 
 
-UPDATE staff SET role = 'admin' WHERE first_name = 'Val' AND last_name = 'Adam';
+
+CREATE VIEW Customer_info AS
+SELECT
+    CONCAT(c.first_name, ' ', c.last_name) AS Customer,
+    CONCAT(c.email, ' ', a.phone) AS Contact_Details,
+    a.address AS Customer_Address,
+    ci.city AS Customer_City,
+    cnt.country AS Customer_Country
+
+FROM
+    customer AS c
+JOIN 
+    address AS a ON c.address_id = a.address_id
+JOIN
+    city AS ci ON a.city_id = ci.city_id
+JOIN    
+    country AS cnt ON ci.country_id = cnt.country_id
+
+ORDER BY 
+    Customer_Country;
+
+
+SELECT * FROM Customer_info;
+
+
+SELECT 
+    city,
+    (SELECT country.country_id FROM country WHERE country_id = ct.country_id) AS country_name
+FROM
+    city AS ct
+WHERE
+    ct.country_id IN (SELECT country_id FROM country WHERE country = 'United Kingdom');
 
 
 
-CREATE ROLE senior
-WITH LOGIN
-  PASSWORD 'Uop@123';
-GRANT CREATE, USAGE ON SCHEMA public TO senior;
-GRANT DELETE ON ALL TABLES IN SCHEMA public TO senior;
-REVOKE ALL ON ALL TABLES IN SCHEMA public FROM senior;
+SELECT 
+    city,
+    (SELECT country FROM country WHERE country_id = ct.country_id) AS country_name
+FROM
+    city AS ct
+WHERE
+    ct.country_id IN (
+        SELECT country_id FROM country WHERE country IN ('United Kingdom', 'France')
+    )
 
+GROUP BY 
+    city, country_name;
