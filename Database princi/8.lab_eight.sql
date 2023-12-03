@@ -51,4 +51,57 @@ ORDER BY
     appearance_count DESC
 LIMIT 1;
     
-print('hello')
+
+SELECT
+    movie.title,movie.movie_id
+FROM
+    movie
+WHERE 
+    movie.title ILIKE 'Purple Movie';
+
+select* from inventory;
+movie_id = 705
+
+SELECT
+    s.store_id,
+    i.inventory_id,
+    m.title,
+    COUNT(*) AS copies_available
+FROM
+    store AS s
+JOIN 
+    inventory AS i ON i.store_id = s.store_id
+JOIN 
+    movie AS m ON i.movie_id = m.movie_id 
+WHERE
+    s.store_id = 1 AND m.title ILIKE 'Purple Movie'
+GROUP BY
+    s.store_id, i.inventory_id, m.movie_id;
+
+
+SELECT
+    CONCAT(s.first_name,' ',s.last_name) AS staff_name,
+    a.address AS staff_address,
+    c.city AS staff_city,
+    s.email AS staff_email
+
+FROM
+    city AS c
+JOIN 
+    address AS a ON c.city_id = a.city_id
+JOIN
+    staff AS s ON a.address_id = s.address_id;
+
+
+SELECT
+    CONCAT(a.first_name,' ',a.last_name) AS actor_in_agent_truman
+FROM
+    actor AS a
+JOIN
+    movie_actor AS mc ON a.actor_id = mc.actor_id
+JOIN
+    movie AS m ON m.movie_id = mc.movie_id
+WHERE
+    m.title ILIKE 'Agent Truman'
+ORDER BY
+    a.last_name;
