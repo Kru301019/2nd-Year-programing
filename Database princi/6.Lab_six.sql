@@ -7,15 +7,15 @@ SET
 WHERE
     address_id = 100;
 
-explain
-SELECT*
-FROM  
+CREATE INDEX my_phone ON address(phone) WHERE phone = '02392844444';
+
+EXPLAIN
+SELECT
+    phone
+FROM 
     address
-WHERE
+WHERE 
     address_id = 100;
-
-
-
 
 CREATE VIEW Customer_info AS
 SELECT

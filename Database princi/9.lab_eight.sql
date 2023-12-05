@@ -62,3 +62,33 @@ ORDER BY
     number_of_copies DESC, m.title;
 
 
+SELECT 
+    c.name AS movie_category,
+    ROUND(AVG(m.length), 2) AS average_movie_length
+FROM 
+    category AS c
+JOIN
+    movie_category AS mc ON c.category_id = mc.category_id
+JOIN 
+    movie AS m on mc.movie_id = m.movie_id
+GROUP BY
+    c.name
+ORDER BY
+    average_movie_length DESC;
+
+
+SELECT 
+    c.name AS movie_category,
+    ROUND(AVG(m.length), 2) AS movie_above_average_movie_lenth
+FROM 
+    category AS c
+JOIN
+    movie_category AS mc ON c.category_id = mc.category_id
+JOIN 
+    movie AS m on mc.movie_id = m.movie_id
+GROUP BY
+    c.name
+HAVING
+    ROUND(AVG(m.length), 2)>115.27
+ORDER BY
+    movie_category DESC;
